@@ -26,3 +26,9 @@ rescue Errno::ENOENT
   STDERR.puts "Could not read #{file_path} file."
   exit 1
 end
+
+require_relative "./lib/file_source"
+
+source = FileSource.new(file)
+
+file.close

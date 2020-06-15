@@ -1,9 +1,6 @@
 source "https://rubygems.org"
 
+gem "simplecov", require: false
 gem "rspec"
-
-group :test do
-  gem "simplecov", require: false
-  gem "mutest-rspec"
-  gem "byebug"
-end
+gem "mutest-rspec"
+gem "byebug"
