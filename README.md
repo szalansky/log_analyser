@@ -56,4 +56,50 @@ evil:Repository#register_unique_visit
 
 * - I couldn't figure out how to get rid of mutations in `Repository#each_by_*` methods.
 
+To run mutation testing for a class execute:
+
+```shell
+$ bundle exec mutest --include lib --require <file_name> --use rspec <KlassName>
+```
+
+Replace `<file_name>` with the name of the file and `<KlassName>` with name of the class.
+
 #### Line coverage
+
+100% line coverage. Latest report included.
+
+### How it works
+
+The main entrypoint for this application is `analyser.rb` CLI script which is executable. It acts as
+glue and puts together all smaller components.
+
+I used `OptionsParser` to make it user-friendly as I think named arguments are more readable than positional
+in case of command line application.
+
+After successful parsing of `--file` argument and opening the file, the data source object is created. I felt like
+it could be a good idea to have a notion of a source of data with unified interface (`#each_entry`) and a default file
+adapter (`FileSource`) as it could be replaced with something else (SQL database?) if needed.
+
+Loader object will later process each entry and parse the URL and IP address and call the given block adding these to repository.
+
+Repository is an in-memory storage which recalculates total and unique visits for each url. CLI script calls
+`repo#each_by_total_visits` and `repo#each_by_unique_visits` to get correct ordering of data for printing the output.
+
+### Possible improvements
+
+* At the moment CLI only supports plain text output and could be expanded to support
+JSON or other formats so that other programs can use the result
+without having to write complicated regular expressions
+
+* Total visits and unique visits summaries could be cached internally
+and only re-calculated after new entries are added. Currently they are computed on-fly.
+
+* Repository uses a hash with `url -> visits data` structure. This is obviously good for
+looking-up for individual URLs but this data is not sorted. Maybe using an auxiliary data
+structure like heap to keep correct ordering of values could be helpful.
+
+* Repository stores everything in memory and this could become a problem with huge log files.
+SQL repository backed by a correctly indexed table could be both faster and able to
+handle larger volumes of data. (This would be my preferred next step.)
+
+* There is a good chance this problem could be solved by piping `awk`, `grep`, `wc` and `uniq`.
