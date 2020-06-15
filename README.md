@@ -88,15 +88,15 @@ Repository is an in-memory storage which recalculates total and unique visits fo
 ### Possible improvements
 
 * At the moment CLI only supports plain text output and could be expanded to support
-JSON or other formats so that other programs can use the result
-without having to write complicated regular expressions
+JSON or other formats. This would allow other programs to interact with it without
+a need to write complex regular expressions.
 
 * Total visits and unique visits summaries could be cached internally
 and only re-calculated after new entries are added. Currently they are computed on-fly.
 
 * Repository uses a hash with `url -> visits data` structure. This is obviously good for
 looking-up for individual URLs but this data is not sorted. Maybe using an auxiliary data
-structure like heap to keep correct ordering of values could be helpful.
+structure like heap to keep correct ordering of values could be of use.
 
 * Repository stores everything in memory and this could become a problem with huge log files.
 SQL repository backed by a correctly indexed table could be both faster and able to
