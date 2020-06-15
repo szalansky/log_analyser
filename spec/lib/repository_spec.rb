@@ -45,7 +45,7 @@ describe Repository do
       end
 
     it "returns correct result" do
-      expect(repo.each_by_total_visits).to eq([
+      expect(repo.each_by_unique_visits).to eq([
         { url: "/home", total_visits: 4, unique_visits: 2 },
         { url: "/about", total_visits: 1, unique_visits: 1 },
       ])

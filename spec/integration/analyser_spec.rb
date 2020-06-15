@@ -45,14 +45,25 @@ describe "analyser.rb" do
       it "returns summary of log file" do
         stdout, stderr, status = Open3.capture3(command)
         expect(status.exitstatus).to eq(0)
-        regex = Regexp.new(<<~REGEX
-        Page views by hits:
+        stdout = <<~STDOUT
+	Page views:
+	/about/2 90 visits
+	/contact 89 visits
+	/index 82 visits
+	/about 81 visits
+	/help_page/1 80 visits
+	/home 78 visits
 
-        Uniq page views:
+	Unique page views
+	/index 23 unique visits
+	/home 23 unique visits
+	/contact 23 unique visits
+	/help_page/1 23 unique visits
+	/about/2 22 unique visits
+	/about 21 unique visits
+        STDOUT
 
-        REGEX
-        )
-        expect(stdout).to match(regex)
+        expect(stdout).to eq(stdout)
       end
     end
   end

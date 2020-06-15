@@ -28,7 +28,25 @@ rescue Errno::ENOENT
 end
 
 require_relative "./lib/file_source"
+require_relative "./lib/loader"
+require_relative "./lib/repository"
 
 source = FileSource.new(file)
+loader = Loader.new(source)
+repo = Repository.new
+
+loader.each_entry do |url, ip|
+  repo.append(url, ip)
+end
+
+STDOUT.puts "Page views:"
+repo.each_by_total_visits.each do |visit|
+  STDOUT.puts("#{visit.fetch(:url)} #{visit.fetch(:total_visits)} visits")
+end
+STDOUT.puts ""
+STDOUT.puts "Unique page views"
+repo.each_by_unique_visits.each do |visit|
+  STDOUT.puts("#{visit.fetch(:url)} #{visit.fetch(:unique_visits)} unique visits")
+end
 
 file.close

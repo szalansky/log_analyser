@@ -15,11 +15,11 @@ class Repository
   end
 
   def each_by_total_visits
-    visits.values.sort { |a, b| -1 * a.fetch(:total_visits) <=> b.fetch(:total_visits) }
+    visits.values.sort { |a, b| -1 * (a.fetch(:total_visits) <=> b.fetch(:total_visits)) }
   end
 
   def each_by_unique_visits
-    visits.values.sort { |a, b| -1 * a.fetch(:unique_visits) <=> b.fetch(:unique_visits) }
+    visits.values.sort { |a, b| -1 * (a.fetch(:unique_visits) <=> b.fetch(:unique_visits)) }
   end
 
   private
